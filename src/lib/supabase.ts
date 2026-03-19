@@ -1,11 +1,11 @@
-// Simple mock for deployment - no real database needed for demo
+// Simplified for demo deployment
 export const supabase = {
   from: () => ({
-    select: () => ({ data: [], error: null }),
-    insert: () => ({ data: null, error: null }),
-    limit: () => ({ data: [], error: null })
+    select: () => Promise.resolve({ data: [], error: null }),
+    insert: () => Promise.resolve({ data: null, error: null }),
+    limit: () => Promise.resolve({ data: [], error: null })
   }),
   auth: {
-    getUser: () => ({ data: { user: null }, error: null })
+    getUser: () => Promise.resolve({ data: { user: null }, error: null })
   }
 }
