@@ -1,16 +1,15 @@
 "use client"
 
 import * as React from "react"
-import * as ProgressPrimitive from "@radix-ui/react-progress"
 import { cn } from "builders/lib/utils"
 
-const Progress = React.forwardRef
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & {
-    variant?: 'default' | 'success' | 'warning' | 'danger' | 'premium'
-    size?: 'sm' | 'default' | 'lg'
-  }
->(({ className, value, variant = 'default', size = 'default', ...props }, ref) => {
+interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
+  value?: number
+  variant?: 'default' | 'success' | 'warning' | 'danger' | 'premium'
+  size?: 'sm' | 'default' | 'lg'
+}
+
+export const Progress = ({ className, value = 0, variant = 'default', size = 'default', ...props }: ProgressProps) => {
   const variants = {
     default: "bg-gradient-to-r from-blue-500 to-blue-600",
     success: "bg-gradient-to-r from-green-500 to-green-600", 
@@ -26,28 +25,24 @@ const Progress = React.forwardRef
   }
 
   return (
-    <ProgressPrimitive.Root
-      ref={ref}
+    <div
       className={cn(
-        "relative overflow-hidden rounded-full bg-slate-200 shadow-inner",
+        "relative overflow-hidden rounded-full bg-slate-200 shadow-inner w-full",
         sizes[size],
         className
       )}
       {...props}
     >
-      <ProgressPrimitive.Indicator
+      <div
         className={cn(
-          "h-full w-full flex-1 transition-all duration-700 ease-out shadow-lg",
+          "h-full transition-all duration-700 ease-out shadow-lg",
           variants[variant]
         )}
-        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+        style={{ width: `${Math.min(100, Math.max(0, value))}%` }}
       />
       {variant === 'premium' && (
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
       )}
-    </ProgressPrimitive.Root>
+    </div>
   )
-})
-Progress.displayName = ProgressPrimitive.Root.displayName
-
-export { Progress }
+}
