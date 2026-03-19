@@ -1,42 +1,35 @@
-import { supabase } from './supabase'
-
-export async function initializeDatabase() {
-  console.log('🏗️ Initializing Advance Builders Pro Database...')
-  
-  try {
-    // Check if we can connect
-    const { data: projects, error } = await supabase
-      .from('advance_builders_projects')
-      .select('*')
-      .limit(1)
-
-    if (error) {
-      console.log('📋 Database might not have tables yet, but connection works')
-    }
-
-    console.log('✅ Database ready!')
-
-  } catch (error) {
-    console.error('❌ Database initialization error:', error)
+// Simplified for demo deployment
+const mockSupabase = {
+  from: () => ({
+    select: () => Promise.resolve({ data: [], error: null }),
+    insert: () => Promise.resolve({ data: null, error: null }),
+    limit: () => Promise.resolve({ data: [], error: null })
+  }),
+  auth: {
+    getUser: () => Promise.resolve({ data: { user: null }, error: null })
   }
 }
 
+export async function initializeDatabase() {
+  console.log('🏗️ Demo mode - no database needed')
+  return Promise.resolve()
+}
+
 export async function createProject(projectData: any) {
-  // For now, we'll just simulate database creation since we haven't set up the full schema
+  // Return a fake project for demo
   const newProject = {
     id: `proj_${Date.now()}`,
     ...projectData,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   }
-
-  // Simulate success
-  console.log('✅ Project created (simulated):', newProject)
+  
+  console.log('✅ Demo project created:', newProject)
   return { data: newProject, error: null }
 }
 
 export async function loadProjects() {
-  // For now, return empty array since we haven't set up the database yet
-  console.log('📊 Loading projects (simulated)')
+  // Return empty array for demo
+  console.log('📊 Demo mode - no projects to load')
   return { data: [], error: null }
 }
