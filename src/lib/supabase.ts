@@ -1,7 +1,11 @@
-import { createClient } from '@supabase/supabase-js'
-import type { Database } from 'builders/types/database'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
+// Simple mock for deployment - no real database needed for demo
+export const supabase = {
+  from: () => ({
+    select: () => ({ data: [], error: null }),
+    insert: () => ({ data: null, error: null }),
+    limit: () => ({ data: [], error: null })
+  }),
+  auth: {
+    getUser: () => ({ data: { user: null }, error: null })
+  }
+}
